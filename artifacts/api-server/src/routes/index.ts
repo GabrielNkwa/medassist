@@ -5,6 +5,7 @@ import symptomsRouter from "./symptoms";
 import dosageRouter from "./dosage";
 import dashboardRouter from "./dashboard";
 import openaiChatRouter from "./openai-chat";
+import exportRouter from "./export";
 
 const router: IRouter = Router();
 
@@ -14,5 +15,6 @@ router.use(symptomsRouter);
 router.use(dosageRouter);
 router.use(dashboardRouter);
 router.use(openaiChatRouter);
+router.use(exportRouter);
 
 export default router;

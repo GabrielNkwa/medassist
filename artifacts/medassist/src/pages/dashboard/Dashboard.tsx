@@ -1,18 +1,61 @@
+import { useState } from "react";
 import { useGetDashboardSummary } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Activity, Stethoscope, Pill, ArrowRight, Clock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Activity, Stethoscope, Pill, ArrowRight, Clock, FileDown, Loader2 } from "lucide-react";
 import { Link } from "wouter";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Dashboard() {
   const { data: summary, isLoading } = useGetDashboardSummary();
+  const [isExporting, setIsExporting] = useState(false);
+  const { toast } = useToast();
+
+  const handleExport = async () => {
+    setIsExporting(true);
+    try {
+      const res = await fetch("/api/export/patient-history");
+      if (!res.ok) throw new Error("Export failed");
+      const blob = await res.blob();
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `medassist-history-${Date.now()}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      toast({ title: "Export complete", description: "PDF downloaded successfully." });
+    } catch {
+      toast({ title: "Export failed", description: "Could not generate the PDF.", variant: "destructive" });
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   return (
     <div className="space-y-6">
-      <div>
-        <h2 className="text-2xl font-semibold tracking-tight">Overview</h2>
-        <p className="text-muted-foreground text-sm mt-1">System activity and consultation metrics</p>
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-2xl font-semibold tracking-tight">Overview</h2>
+          <p className="text-muted-foreground text-sm mt-1">System activity and consultation metrics</p>
+        </div>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={handleExport}
+          disabled={isExporting}
+          className="gap-2"
+        >
+          {isExporting ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <FileDown className="h-4 w-4" />
+          )}
+          {isExporting ? "Generating PDF…" : "Export History"}
+        </Button>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
