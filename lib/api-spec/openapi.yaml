@@ -3,13 +3,21 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: MedAssist API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: radiology
+    description: Radiology image analysis
+  - name: symptoms
+    description: Symptom-based diagnosis assistance
+  - name: dosage
+    description: Medication dosage calculator
+  - name: openai
+    description: OpenAI AI chat operations
 paths:
   /healthz:
     get:
@@ -24,6 +32,394 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /radiology/analyses:
+    get:
+      operationId: listRadiologyAnalyses
+      tags: [radiology]
+      summary: List all radiology analyses
+      responses:
+        "200":
+          description: List of analyses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RadiologyAnalysis"
+    post:
+      operationId: createRadiologyAnalysis
+      tags: [radiology]
+      summary: Submit a radiology image for AI analysis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RadiologyAnalysisInput"
+      responses:
+        "201":
+          description: Analysis result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RadiologyAnalysis"
+
+  /radiology/analyses/{id}:
+    get:
+      operationId: getRadiologyAnalysis
+      tags: [radiology]
+      summary: Get a specific radiology analysis
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Analysis details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RadiologyAnalysis"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteRadiologyAnalysis
+      tags: [radiology]
+      summary: Delete a radiology analysis
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /radiology/stats:
+    get:
+      operationId: getRadiologyStats
+      tags: [radiology]
+      summary: Get radiology analysis statistics
+      responses:
+        "200":
+          description: Stats summary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RadiologyStats"
+
+  /symptoms/consultations:
+    get:
+      operationId: listSymptomConsultations
+      tags: [symptoms]
+      summary: List all symptom consultations
+      responses:
+        "200":
+          description: List of consultations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/SymptomConsultation"
+    post:
+      operationId: createSymptomConsultation
+      tags: [symptoms]
+      summary: Submit symptoms for AI-assisted diagnosis
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SymptomConsultationInput"
+      responses:
+        "201":
+          description: Consultation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SymptomConsultation"
+
+  /symptoms/consultations/{id}:
+    get:
+      operationId: getSymptomConsultation
+      tags: [symptoms]
+      summary: Get a specific symptom consultation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Consultation details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SymptomConsultation"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteSymptomConsultation
+      tags: [symptoms]
+      summary: Delete a symptom consultation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dosage/calculations:
+    get:
+      operationId: listDosageCalculations
+      tags: [dosage]
+      summary: List all dosage calculations
+      responses:
+        "200":
+          description: List of calculations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/DosageCalculation"
+    post:
+      operationId: createDosageCalculation
+      tags: [dosage]
+      summary: Calculate medication dosage for a patient
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/DosageCalculationInput"
+      responses:
+        "201":
+          description: Dosage calculation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DosageCalculation"
+
+  /dosage/calculations/{id}:
+    get:
+      operationId: getDosageCalculation
+      tags: [dosage]
+      summary: Get a specific dosage calculation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Calculation details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DosageCalculation"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+    delete:
+      operationId: deleteDosageCalculation
+      tags: [dosage]
+      summary: Delete a dosage calculation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /dosage/drugs:
+    get:
+      operationId: listDrugs
+      tags: [dosage]
+      summary: List common drugs for dosage reference
+      responses:
+        "200":
+          description: List of drugs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Drug"
+
+  /dashboard/summary:
+    get:
+      operationId: getDashboardSummary
+      tags: [health]
+      summary: Get dashboard statistics summary
+      responses:
+        "200":
+          description: Summary stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardSummary"
+
+  /openai/conversations:
+    get:
+      operationId: listOpenaiConversations
+      tags: [openai]
+      summary: List all conversations
+      responses:
+        "200":
+          description: List of conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OpenaiConversation"
+    post:
+      operationId: createOpenaiConversation
+      tags: [openai]
+      summary: Create a new conversation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OpenaiConversationInput"
+      responses:
+        "201":
+          description: Created conversation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenaiConversation"
+
+  /openai/conversations/{id}:
+    get:
+      operationId: getOpenaiConversation
+      tags: [openai]
+      summary: Get conversation with messages
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Conversation with messages
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenaiConversationWithMessages"
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenaiError"
+    delete:
+      operationId: deleteOpenaiConversation
+      tags: [openai]
+      summary: Delete a conversation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OpenaiError"
+
+  /openai/conversations/{id}/messages:
+    get:
+      operationId: listOpenaiMessages
+      tags: [openai]
+      summary: List messages in a conversation
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/OpenaiMessage"
+    post:
+      operationId: sendOpenaiMessage
+      tags: [openai]
+      summary: Send a text message and receive a streaming text response
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/OpenaiMessageInput"
+      responses:
+        "200":
+          description: SSE stream of assistant text chunks
+          content:
+            text/event-stream: {}
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +430,341 @@ components:
       required:
         - status
 
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+
+    RadiologyAnalysis:
+      type: object
+      properties:
+        id:
+          type: integer
+        imageBase64:
+          type: string
+        imageType:
+          type: string
+        patientAge:
+          type: ["integer", "null"]
+        patientSex:
+          type: ["string", "null"]
+        clinicalNotes:
+          type: ["string", "null"]
+        findings:
+          type: string
+        impression:
+          type: string
+        recommendations:
+          type: string
+        confidence:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - imageBase64
+        - imageType
+        - findings
+        - impression
+        - recommendations
+        - confidence
+        - createdAt
+
+    RadiologyAnalysisInput:
+      type: object
+      properties:
+        imageBase64:
+          type: string
+        imageType:
+          type: string
+        patientAge:
+          type: ["integer", "null"]
+        patientSex:
+          type: ["string", "null"]
+        clinicalNotes:
+          type: ["string", "null"]
+      required:
+        - imageBase64
+        - imageType
+
+    RadiologyStats:
+      type: object
+      properties:
+        total:
+          type: integer
+        thisWeek:
+          type: integer
+        byType:
+          type: array
+          items:
+            type: object
+            properties:
+              imageType:
+                type: string
+              count:
+                type: integer
+            required:
+              - imageType
+              - count
+      required:
+        - total
+        - thisWeek
+        - byType
+
+    SymptomConsultation:
+      type: object
+      properties:
+        id:
+          type: integer
+        patientAge:
+          type: integer
+        patientSex:
+          type: string
+        symptoms:
+          type: string
+        duration:
+          type: ["string", "null"]
+        medicalHistory:
+          type: ["string", "null"]
+        vitals:
+          type: ["string", "null"]
+        diagnosis:
+          type: string
+        differentials:
+          type: string
+        recommendedTests:
+          type: string
+        treatment:
+          type: string
+        urgency:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - patientAge
+        - patientSex
+        - symptoms
+        - diagnosis
+        - differentials
+        - recommendedTests
+        - treatment
+        - urgency
+        - createdAt
+
+    SymptomConsultationInput:
+      type: object
+      properties:
+        patientAge:
+          type: integer
+        patientSex:
+          type: string
+        symptoms:
+          type: string
+        duration:
+          type: ["string", "null"]
+        medicalHistory:
+          type: ["string", "null"]
+        vitals:
+          type: ["string", "null"]
+      required:
+        - patientAge
+        - patientSex
+        - symptoms
+
+    DosageCalculation:
+      type: object
+      properties:
+        id:
+          type: integer
+        drugName:
+          type: string
+        patientType:
+          type: string
+        patientWeight:
+          type: ["number", "null"]
+        patientAge:
+          type: ["number", "null"]
+        indication:
+          type: ["string", "null"]
+        specialConditions:
+          type: ["string", "null"]
+        recommendedDose:
+          type: string
+        frequency:
+          type: string
+        route:
+          type: string
+        duration:
+          type: string
+        warnings:
+          type: string
+        adjustments:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - drugName
+        - patientType
+        - recommendedDose
+        - frequency
+        - route
+        - duration
+        - warnings
+        - adjustments
+        - createdAt
+
+    DosageCalculationInput:
+      type: object
+      properties:
+        drugName:
+          type: string
+        patientType:
+          type: string
+          enum: [pediatric, adult, pregnant, renal_impairment, hepatic_impairment, elderly]
+        patientWeight:
+          type: ["number", "null"]
+        patientAge:
+          type: ["number", "null"]
+        indication:
+          type: ["string", "null"]
+        specialConditions:
+          type: ["string", "null"]
+      required:
+        - drugName
+        - patientType
+
+    Drug:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        category:
+          type: string
+        commonIndications:
+          type: string
+      required:
+        - id
+        - name
+        - category
+        - commonIndications
+
+    DashboardSummary:
+      type: object
+      properties:
+        totalRadiologyAnalyses:
+          type: integer
+        totalSymptomConsultations:
+          type: integer
+        totalDosageCalculations:
+          type: integer
+        recentActivity:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+              description:
+                type: string
+              createdAt:
+                type: string
+                format: date-time
+            required:
+              - type
+              - description
+              - createdAt
+      required:
+        - totalRadiologyAnalyses
+        - totalSymptomConsultations
+        - totalDosageCalculations
+        - recentActivity
+
+    OpenaiConversation:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - title
+        - createdAt
+
+    OpenaiMessage:
+      type: object
+      properties:
+        id:
+          type: integer
+        conversationId:
+          type: integer
+        role:
+          type: string
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - conversationId
+        - role
+        - content
+        - createdAt
+
+    OpenaiConversationInput:
+      type: object
+      properties:
+        title:
+          type: string
+      required:
+        - title
+
+    OpenaiMessageInput:
+      type: object
+      properties:
+        content:
+          type: string
+      required:
+        - content
+
+    OpenaiConversationWithMessages:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/OpenaiMessage"
+      required:
+        - id
+        - title
+        - createdAt
+        - messages
+
+    OpenaiError:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
