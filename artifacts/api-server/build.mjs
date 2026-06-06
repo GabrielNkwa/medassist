@@ -22,13 +22,29 @@ async function buildAll() {
     outdir: distDir,
     outExtension: { ".js": ".mjs" },
     logLevel: "info",
-    // Some packages may not be bundleable, so we externalize them, we can add more here as needed.
-    // Some of the packages below may not be imported or installed, but we're adding them in case they are in the future.
-    // Examples of unbundleable packages:
-    // - uses native modules and loads them dynamically (e.g. sharp)
-    // - use path traversal to read files (e.g. @google-cloud/secret-manager loads sibling .proto files)
+    // Some packages may not be bundleable, so we externalize them to keep the node bundle small.
+    // This is especially useful for large runtime dependencies like openai, express, zod, iconv-lite, and mime-db.
+    // Local workspace packages can also be externalized so the bundle stays focused on app code.
     external: [
       "*.node",
+      "@workspace/*",
+      "express",
+      "openai",
+      "drizzle-orm",
+      "zod",
+      "mime-db",
+      "iconv-lite",
+      "pg",
+      "dotenv",
+      "pino",
+      "pino-http",
+      "pino-pretty",
+      "thread-stream",
+      "cookie-parser",
+      "cors",
+      "form-data",
+      "pdfkit",
+      "source-map-support",
       "sharp",
       "better-sqlite3",
       "sqlite3",
@@ -82,7 +98,6 @@ async function buildAll() {
       "mysql2",
       "newrelic",
       "odbc",
-      "pdfkit",
       "piscina",
       "realm",
       "ref-napi",
