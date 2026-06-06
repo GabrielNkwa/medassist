@@ -21,8 +21,10 @@
     "artifacts/*",
     "lib/*"
   ],
+  "dependencies": {
+    "@vercel/node": "^5.8.12"
+  },
   "devDependencies": {
-    "@vercel/node": "^5.8.12",
     "concurrently": "^10.0.3",
     "cross-env": "^10.1.0",
     "prettier": "^3.8.3",

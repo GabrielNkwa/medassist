@@ -1,8 +1,6 @@
-import { VercelRequest, VercelResponse } from "@vercel/node";
-import app from "../artifacts/api-server/dist/app.mjs";
 
-export default function handler(req: VercelRequest, res: VercelResponse) {
-  // Make sure req and res are compatible with Express
-  app(req as any, res as any);
-}
+import app from "../artifacts/api-server/src/app";
 
+// Vercel can automatically bridge standard Express apps 
+// if you export it as the default handler
+export default app;
