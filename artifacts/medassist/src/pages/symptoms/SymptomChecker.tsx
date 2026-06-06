@@ -83,15 +83,20 @@ export default function SymptomChecker() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold tracking-tight">Symptom Checker</h2>
+        <h2 className="text-xl md:text-2xl font-semibold tracking-tight bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
+          Symptom Checker
+        </h2>
         <p className="text-muted-foreground text-sm mt-1">AI-assisted diagnosis and clinical recommendations</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-12">
         <div className="md:col-span-5 space-y-6">
-          <Card>
+          <Card className="border-primary/20">
             <CardHeader>
-              <CardTitle className="text-lg">Patient Intake</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Stethoscope className="h-5 w-5 text-primary" />
+                Patient Intake
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <Form {...form}>
@@ -125,7 +130,7 @@ export default function SymptomChecker() {
                             <SelectContent>
                               <SelectItem value="male">Male</SelectItem>
                               <SelectItem value="female">Female</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
+                             
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -206,11 +211,11 @@ export default function SymptomChecker() {
             <div className="space-y-4">
               {[1, 2].map(i => <Skeleton key={i} className="h-48 w-full rounded-lg" />)}
             </div>
-          ) : consultations && consultations.length > 0 ? (
+          ) : Array.isArray(consultations) && consultations.length > 0 ? (
             <div className="space-y-4">
               {consultations.map(consult => (
-                <Card key={consult.id}>
-                  <CardHeader className="pb-2 flex flex-row items-start justify-between">
+                <Card key={consult.id} className="border-primary/10 hover:border-primary/30 transition-all">
+                  <CardHeader className="pb-2 flex flex-row items-start justify-between gap-2">
                     <div>
                       <CardTitle className="text-base font-semibold text-primary">{consult.diagnosis}</CardTitle>
                       <p className="text-xs text-muted-foreground mt-1">
@@ -226,7 +231,7 @@ export default function SymptomChecker() {
                       <span className="font-medium">Symptoms:</span> {consult.symptoms}
                     </div>
                     
-                    <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                       <div className="p-3 bg-muted/50 rounded-md">
                         <span className="font-semibold block mb-1">Differentials</span>
                         <p className="text-muted-foreground">{consult.differentials}</p>
@@ -237,7 +242,7 @@ export default function SymptomChecker() {
                       </div>
                     </div>
                     
-                    <div className="flex justify-between items-center pt-2">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pt-2 gap-2">
                       <p className="text-xs text-muted-foreground"><span className="font-medium text-foreground">Tests:</span> {consult.recommendedTests}</p>
                       <Button variant="ghost" size="sm" onClick={() => deleteConsultation.mutate({ id: consult.id }, { onSuccess: () => queryClient.invalidateQueries({ queryKey: getListSymptomConsultationsQueryKey() }) })}>
                         <Trash2 className="h-4 w-4 text-destructive" />
@@ -248,7 +253,7 @@ export default function SymptomChecker() {
               ))}
             </div>
           ) : (
-            <Card className="border-dashed bg-transparent">
+            <Card className="border-dashed border-primary/30 bg-transparent">
               <CardContent className="flex flex-col items-center justify-center h-48 text-center">
                 <Stethoscope className="h-8 w-8 text-muted-foreground mb-3" />
                 <p className="text-sm font-medium">No consultations</p>

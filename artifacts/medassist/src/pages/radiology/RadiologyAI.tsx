@@ -121,25 +121,28 @@ export default function RadiologyAI() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-semibold tracking-tight">Radiology AI</h2>
-          <p className="text-muted-foreground text-sm mt-1">Upload imaging for AI-assisted preliminary findings</p>
-        </div>
+      <div>
+        <h2 className="text-xl md:text-2xl font-semibold tracking-tight bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
+          Radiology AI
+        </h2>
+        <p className="text-muted-foreground text-sm mt-1">Upload imaging for AI-assisted preliminary findings</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-12">
         <div className="md:col-span-5 lg:col-span-4 space-y-6">
-          <Card>
+          <Card className="border-primary/20">
             <CardHeader>
-              <CardTitle className="text-lg">New Analysis</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Activity className="h-5 w-5 text-primary" />
+                New Analysis
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium leading-none">Medical Image</label>
-                    <div className="border-2 border-dashed border-border rounded-lg p-6 flex flex-col items-center justify-center bg-muted/30 text-center hover:bg-muted/50 transition-colors cursor-pointer relative">
+                    <div className="border-2 border-dashed border-primary/30 rounded-lg p-6 flex flex-col items-center justify-center bg-muted/30 text-center hover:bg-primary/5 transition-colors cursor-pointer relative">
                       <input 
                         type="file" 
                         accept={ACCEPTED_IMAGE_TYPES.join(',')} 
@@ -192,7 +195,7 @@ export default function RadiologyAI() {
                             <SelectContent>
                               <SelectItem value="male">Male</SelectItem>
                               <SelectItem value="female">Female</SelectItem>
-                              <SelectItem value="other">Other</SelectItem>
+                              
                             </SelectContent>
                           </Select>
                           <FormMessage />
@@ -248,18 +251,18 @@ export default function RadiologyAI() {
                 <Skeleton key={i} className="h-32 w-full rounded-lg" />
               ))}
             </div>
-          ) : analyses && analyses.length > 0 ? (
+          ) : Array.isArray(analyses) && analyses.length > 0 ? (
             <div className="space-y-4">
               {analyses.map(analysis => (
-                <Card key={analysis.id}>
+                <Card key={analysis.id} className="border-primary/10 hover:border-primary/30 transition-all">
                   <CardHeader className="pb-2">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-2">
                       <CardTitle className="text-base flex items-center gap-2">
                         <Activity className="h-4 w-4 text-primary" />
                         Analysis #{analysis.id}
                       </CardTitle>
-                      <span className="text-xs text-muted-foreground">
-                        {format(new Date(analysis.createdAt), "MMM d, yyyy h:mm a")}
+                      <span className="text-xs text-muted-foreground shrink-0">
+                        {format(new Date(analysis.createdAt), "MMM d, h:mm a")}
                       </span>
                     </div>
                   </CardHeader>
@@ -269,7 +272,7 @@ export default function RadiologyAI() {
                         <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Impression</h4>
                         <p className="text-sm font-medium">{analysis.impression}</p>
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-1">Findings</h4>
                           <p className="text-sm text-muted-foreground line-clamp-2">{analysis.findings}</p>
@@ -302,7 +305,7 @@ export default function RadiologyAI() {
               ))}
             </div>
           ) : (
-            <Card className="border-dashed bg-transparent">
+            <Card className="border-dashed border-primary/30 bg-transparent">
               <CardContent className="flex flex-col items-center justify-center h-48 text-center">
                 <FileImage className="h-8 w-8 text-muted-foreground mb-3" />
                 <p className="text-sm font-medium">No analyses yet</p>

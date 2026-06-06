@@ -78,7 +78,7 @@ export default function DosageCalculator() {
   };
 
   const filteredDrugs = useMemo(() => {
-    if (!drugs) return [];
+    if (!Array.isArray(drugs)) return [];
     if (!search) return drugs;
     const lower = search.toLowerCase();
     return drugs.filter(d => d.name.toLowerCase().includes(lower) || d.category.toLowerCase().includes(lower));
@@ -87,15 +87,20 @@ export default function DosageCalculator() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-2xl font-semibold tracking-tight">Dose Calculator</h2>
+        <h2 className="text-xl md:text-2xl font-semibold tracking-tight bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
+          Dose Calculator
+        </h2>
         <p className="text-muted-foreground text-sm mt-1">Precise medication dosing based on patient parameters</p>
       </div>
 
       <div className="grid gap-6 md:grid-cols-12">
         <div className="md:col-span-4 space-y-6">
-          <Card>
+          <Card className="border-primary/20">
             <CardHeader>
-              <CardTitle className="text-lg">Calculate</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Pill className="h-5 w-5 text-primary" />
+                Calculate
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <Form {...form}>
@@ -125,11 +130,13 @@ export default function DosageCalculator() {
                             </div>
                             {isLoadingDrugs ? (
                               <div className="p-2 text-sm text-muted-foreground">Loading drugs...</div>
-                            ) : filteredDrugs.map(d => (
-                              <SelectItem key={d.id} value={d.name}>
-                                {d.name} <span className="text-muted-foreground ml-1 text-xs">({d.category})</span>
-                              </SelectItem>
-                            ))}
+                            ) : Array.isArray(filteredDrugs) && filteredDrugs.length > 0 ? (
+                              filteredDrugs.map(d => (
+                                <SelectItem key={d.id} value={d.name}>
+                                  {d.name} <span className="text-muted-foreground ml-1 text-xs">({d.category})</span>
+                                </SelectItem>
+                              ))
+                            ) : null}
                           </SelectContent>
                         </Select>
                         <FormMessage />
@@ -219,20 +226,20 @@ export default function DosageCalculator() {
             <div className="space-y-4">
               {[1, 2].map(i => <Skeleton key={i} className="h-40 w-full rounded-lg" />)}
             </div>
-          ) : calculations && calculations.length > 0 ? (
+          ) : Array.isArray(calculations) && calculations.length > 0 ? (
             <div className="space-y-4">
               {calculations.map(calc => (
-                <Card key={calc.id} className="overflow-hidden border-l-4 border-l-primary">
-                  <CardHeader className="bg-muted/30 pb-3 py-3 px-4 flex flex-row items-center justify-between">
+                <Card key={calc.id} className="overflow-hidden border-l-4 border-l-primary border-primary/10 hover:border-primary/30 transition-all">
+                  <CardHeader className="bg-muted/30 pb-3 py-3 px-4 flex flex-row items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <Pill className="h-4 w-4 text-primary" />
                       <CardTitle className="text-base font-semibold">{calc.drugName}</CardTitle>
-                      <span className="text-xs px-2 py-0.5 rounded-full bg-background border text-muted-foreground uppercase tracking-wider">
+                      <span className="text-xs px-2 py-0.5 rounded-full bg-background border text-muted-foreground uppercase tracking-wider shrink-0">
                         {calc.patientType.replace('_', ' ')}
                       </span>
                     </div>
                     <div className="flex items-center gap-3">
-                      <span className="text-xs text-muted-foreground">{format(new Date(calc.createdAt), "MMM d, h:mm a")}</span>
+                      <span className="text-xs text-muted-foreground shrink-0">{format(new Date(calc.createdAt), "MMM d, h:mm a")}</span>
                       <Button variant="ghost" size="icon" className="h-6 w-6 text-destructive" onClick={() => deleteCalc.mutate({ id: calc.id }, { onSuccess: () => queryClient.invalidateQueries({ queryKey: getListDosageCalculationsQueryKey() }) })}>
                         <Trash2 className="h-3 w-3" />
                       </Button>
@@ -275,7 +282,7 @@ export default function DosageCalculator() {
               ))}
             </div>
           ) : (
-            <Card className="border-dashed bg-transparent">
+            <Card className="border-dashed border-primary/30 bg-transparent">
               <CardContent className="flex flex-col items-center justify-center h-48 text-center">
                 <Pill className="h-8 w-8 text-muted-foreground mb-3" />
                 <p className="text-sm font-medium">No calculations</p>

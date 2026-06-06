@@ -37,9 +37,11 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-semibold tracking-tight">Overview</h2>
+          <h2 className="text-xl md:text-2xl font-semibold tracking-tight bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
+            Overview
+          </h2>
           <p className="text-muted-foreground text-sm mt-1">System activity and consultation metrics</p>
         </div>
         <Button
@@ -47,7 +49,7 @@ export default function Dashboard() {
           size="sm"
           onClick={handleExport}
           disabled={isExporting}
-          className="gap-2"
+          className="gap-2 border-primary/30 hover:bg-primary/10 hover:text-primary w-full sm:w-auto"
         >
           {isExporting ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -58,57 +60,72 @@ export default function Dashboard() {
         </Button>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card>
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Card className="border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Radiology Analyses</CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Radiology Analyses</CardTitle>
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Activity className="h-5 w-5 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
             {isLoading ? (
-              <Skeleton className="h-7 w-16" />
+              <Skeleton className="h-8 w-20" />
             ) : (
-              <div className="text-2xl font-bold">{summary?.totalRadiologyAnalyses || 0}</div>
+              <div className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
+                {summary?.totalRadiologyAnalyses || 0}
+              </div>
             )}
-            <p className="text-xs text-muted-foreground mt-1">Images processed</p>
+            <p className="text-xs text-muted-foreground mt-2">Images processed</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Symptom Consultations</CardTitle>
-            <Stethoscope className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Symptom Consultations</CardTitle>
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Stethoscope className="h-5 w-5 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
             {isLoading ? (
-              <Skeleton className="h-7 w-16" />
+              <Skeleton className="h-8 w-20" />
             ) : (
-              <div className="text-2xl font-bold">{summary?.totalSymptomConsultations || 0}</div>
+              <div className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
+                {summary?.totalSymptomConsultations || 0}
+              </div>
             )}
-            <p className="text-xs text-muted-foreground mt-1">AI diagnoses generated</p>
+            <p className="text-xs text-muted-foreground mt-2">AI diagnoses generated</p>
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-primary/20 hover:border-primary/40 transition-all duration-300 hover:shadow-lg hover:shadow-primary/10 sm:col-span-2 lg:col-span-1">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <CardTitle className="text-sm font-medium">Dosage Calculations</CardTitle>
-            <Pill className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium text-muted-foreground">Dosage Calculations</CardTitle>
+            <div className="p-2 bg-primary/10 rounded-lg">
+              <Pill className="h-5 w-5 text-primary" />
+            </div>
           </CardHeader>
           <CardContent>
             {isLoading ? (
-              <Skeleton className="h-7 w-16" />
+              <Skeleton className="h-8 w-20" />
             ) : (
-              <div className="text-2xl font-bold">{summary?.totalDosageCalculations || 0}</div>
+              <div className="text-3xl font-bold bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
+                {summary?.totalDosageCalculations || 0}
+              </div>
             )}
-            <p className="text-xs text-muted-foreground mt-1">Calculations performed</p>
+            <p className="text-xs text-muted-foreground mt-2">Calculations performed</p>
           </CardContent>
         </Card>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card className="col-span-1">
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card className="border-primary/10">
           <CardHeader>
-            <CardTitle className="text-lg">Recent Activity</CardTitle>
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Clock className="h-5 w-5 text-primary" />
+              Recent Activity
+            </CardTitle>
             <CardDescription>Latest interactions across modules</CardDescription>
           </CardHeader>
           <CardContent>
@@ -124,19 +141,19 @@ export default function Dashboard() {
                   </div>
                 ))}
               </div>
-            ) : summary?.recentActivity && summary.recentActivity.length > 0 ? (
-              <div className="space-y-6">
+            ) : Array.isArray(summary?.recentActivity) && summary.recentActivity.length > 0 ? (
+              <div className="space-y-4">
                 {summary.recentActivity.map((activity, i) => (
-                  <div key={i} className="flex items-start gap-4">
-                    <div className="rounded-full bg-muted p-2">
-                      {activity.type === "radiology" && <Activity className="h-4 w-4 text-primary" />}
-                      {activity.type === "symptom" && <Stethoscope className="h-4 w-4 text-primary" />}
-                      {activity.type === "dosage" && <Pill className="h-4 w-4 text-primary" />}
+                  <div key={i} className="flex items-start gap-4 p-3 rounded-lg hover:bg-primary/5 transition-colors">
+                    <div className="rounded-full bg-gradient-to-br from-primary/20 to-purple-500/20 p-2.5">
+                      {activity.type === "radiology" && <Activity className="h-5 w-5 text-primary" />}
+                      {activity.type === "symptom" && <Stethoscope className="h-5 w-5 text-primary" />}
+                      {activity.type === "dosage" && <Pill className="h-5 w-5 text-primary" />}
                     </div>
                     <div className="flex-1 space-y-1">
                       <p className="text-sm font-medium leading-none">{activity.description}</p>
                       <p className="text-xs text-muted-foreground flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
+                        <Clock className="h-3.5 w-3.5" />
                         {format(new Date(activity.createdAt), "MMM d, h:mm a")}
                       </p>
                     </div>
@@ -144,7 +161,7 @@ export default function Dashboard() {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8 text-muted-foreground text-sm">
+              <div className="text-center py-10 text-muted-foreground text-sm">
                 No recent activity found.
               </div>
             )}
@@ -152,56 +169,62 @@ export default function Dashboard() {
         </Card>
 
         <div className="space-y-4">
-          <Card className="bg-primary/5 border-primary/10">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Activity className="h-4 w-4 text-primary" />
-                Radiology Analysis
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Upload X-rays, MRIs, or CT scans for instant AI-assisted preliminary findings and recommendations.
-              </p>
-              <Link href="/radiology" className="text-sm font-medium text-primary flex items-center gap-1 hover:underline">
-                New Analysis <ArrowRight className="h-3 w-3" />
-              </Link>
-            </CardContent>
-          </Card>
+          <Link href="/radiology" className="block">
+            <Card className="bg-gradient-to-br from-primary/10 to-purple-500/5 border-primary/20 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer group">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-semibold flex items-center gap-2 group-hover:text-primary transition-colors">
+                  <Activity className="h-5 w-5 text-primary" />
+                  Radiology Analysis
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Upload X-rays, MRIs, or CT scans for instant AI-assisted preliminary findings and recommendations.
+                </p>
+                <div className="text-sm font-medium text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                  New Analysis <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card className="bg-primary/5 border-primary/10">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Stethoscope className="h-4 w-4 text-primary" />
-                Symptom Checker
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Input patient symptoms and history to receive differential diagnoses, recommended tests, and treatment plans.
-              </p>
-              <Link href="/symptoms" className="text-sm font-medium text-primary flex items-center gap-1 hover:underline">
-                Start Consultation <ArrowRight className="h-3 w-3" />
-              </Link>
-            </CardContent>
-          </Card>
+          <Link href="/symptoms" className="block">
+            <Card className="bg-gradient-to-br from-primary/10 to-purple-500/5 border-primary/20 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer group">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-semibold flex items-center gap-2 group-hover:text-primary transition-colors">
+                  <Stethoscope className="h-5 w-5 text-primary" />
+                  Symptom Checker
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Input patient symptoms and history to receive differential diagnoses, recommended tests, and treatment plans.
+                </p>
+                <div className="text-sm font-medium text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Start Consultation <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
 
-          <Card className="bg-primary/5 border-primary/10">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-sm font-medium flex items-center gap-2">
-                <Pill className="h-4 w-4 text-primary" />
-                Dose Calculator
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-muted-foreground mb-4">
-                Calculate precise medication dosages based on patient parameters, conditions, and selected drugs.
-              </p>
-              <Link href="/dosage" className="text-sm font-medium text-primary flex items-center gap-1 hover:underline">
-                Calculate Dose <ArrowRight className="h-3 w-3" />
-              </Link>
-            </CardContent>
-          </Card>
+          <Link href="/dosage" className="block">
+            <Card className="bg-gradient-to-br from-primary/10 to-purple-500/5 border-primary/20 hover:border-primary/40 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300 cursor-pointer group">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base font-semibold flex items-center gap-2 group-hover:text-primary transition-colors">
+                  <Pill className="h-5 w-5 text-primary" />
+                  Dose Calculator
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Calculate precise medication dosages based on patient parameters, conditions, and selected drugs.
+                </p>
+                <div className="text-sm font-medium text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                  Calculate Dose <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
         </div>
       </div>
     </div>
