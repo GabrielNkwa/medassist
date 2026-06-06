@@ -3,6 +3,10 @@
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "outputDirectory": "artifacts/medassist/dist",
+  "builds": [
+    { "src": "api/**/*.ts", "use": "@vercel/node" },
+    { "src": "artifacts/medassist/dist/**", "use": "@vercel/static" }
+  ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/[...path]" },
     { "source": "/(.*)", "destination": "/index.html" }
