@@ -1,3 +1,9 @@
+try {
+  await import("dotenv/config");
+} catch (error) {
+  // dotenv is optional in this environment; if it is not installed or not needed, continue.
+}
+
 import app from "./app";
 import { logger } from "./lib/logger";
 
