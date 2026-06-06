@@ -21,7 +21,7 @@
     "lib/*"
   ],
   "devDependencies": {
-    "@vercel/node": "^4.5.0",
+    "@vercel/node": "^5.8.12",
     "concurrently": "^10.0.3",
     "cross-env": "^10.1.0",
     "prettier": "^3.8.3",
