@@ -13,38 +13,18 @@
     "typecheck": "npm run typecheck:libs && (npm --prefix artifacts/api-server run typecheck || true) && (npm --prefix artifacts/medassist run typecheck || true)"
   },
   "private": true,
-  "packageManager": "pnpm@11.0.8",
+  "packageManager": "pnpm@9.12.3",
+  "engines": {
+    "node": ">=20.x"
+  },
   "workspaces": [
     "artifacts/*",
     "lib/*"
   ],
-  "pnpm": {
-    "catalog": {
-      "@replit/vite-plugin-cartographer": "latest",
-      "@replit/vite-plugin-dev-banner": "latest",
-      "@replit/vite-plugin-runtime-error-modal": "latest",
-      "@tailwindcss/vite": "latest",
-      "@types/node": "latest",
-      "@types/react": "latest",
-      "@types/react-dom": "latest",
-      "@vitejs/plugin-react": "latest",
-      "class-variance-authority": "latest",
-      "clsx": "latest",
-      "framer-motion": "latest",
-      "lucide-react": "latest",
-      "react": "latest",
-      "react-dom": "latest",
-      "tailwind-merge": "latest",
-      "tailwindcss": "latest",
-      "vite": "latest",
-      "zod": "latest",
-      "tsx": "latest"
-    }
-  },
   "devDependencies": {
     "concurrently": "^10.0.3",
     "cross-env": "^10.1.0",
     "prettier": "^3.8.3",
-    "typescript": "~5.9.3"
+    "typescript": "~5.6.3"
   }
 }
