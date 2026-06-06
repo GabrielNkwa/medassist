@@ -35,7 +35,7 @@ if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
 }
 
-async function isPortAvailable(portNumber) {
+async function isPortAvailable(portNumber: number) {
   return new Promise((resolve) => {
     const socket = new net.Socket();
 
@@ -44,9 +44,9 @@ async function isPortAvailable(portNumber) {
       resolve(false);
     });
 
-    socket.once("error", (error) => {
+    socket.once("error", (error: NodeJS.ErrnoException) => {
       socket.destroy();
-      resolve(error.code === "ECONNREFUSED" || error.code === "EADDRNOTAVAIL");
+      resolve(error?.code === "ECONNREFUSED" || error?.code === "EADDRNOTAVAIL");
     });
 
     socket.setTimeout(500, () => {

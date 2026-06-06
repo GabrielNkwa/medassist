@@ -6,6 +6,12 @@
     "outDir": "dist",
     "rootDir": "src",
     "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@workspace/db": ["../../lib/db/src"],
+      "@workspace/db/schema": ["../../lib/db/src/schema"],
+      "@workspace/api-zod": ["../../lib/api-zod/src"]
+    },
     "types": ["node"]
   },
   "include": ["src"],
