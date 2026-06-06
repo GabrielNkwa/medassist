@@ -9,6 +9,7 @@ import Dashboard from "@/pages/dashboard/Dashboard";
 import RadiologyAI from "@/pages/radiology/RadiologyAI";
 import SymptomChecker from "@/pages/symptoms/SymptomChecker";
 import DosageCalculator from "@/pages/dosage/DosageCalculator";
+import Settings from "@/pages/settings/Settings";
 
 const queryClient = new QueryClient();
 
@@ -20,6 +21,7 @@ function Router() {
         <Route path="/radiology" component={RadiologyAI} />
         <Route path="/symptoms" component={SymptomChecker} />
         <Route path="/dosage" component={DosageCalculator} />
+        <Route path="/settings" component={Settings} />
         <Route component={NotFound} />
       </Switch>
     </AppLayout>

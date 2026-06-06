@@ -71,7 +71,12 @@ export function AppLayout({ children }: { children: ReactNode }) {
       <div className="p-4 border-t space-y-1">
         <Link
           href="/settings"
-          className="flex items-center gap-3 px-3 py-2.5 text-sm font-medium text-muted-foreground rounded-md hover:bg-accent/20 hover:text-accent-foreground transition-colors"
+          className={cn(
+            "flex items-center gap-3 px-3 py-2.5 text-sm font-medium rounded-md transition-colors",
+            location === "/settings"
+              ? "bg-primary/20 text-primary border-l-2 border-primary"
+              : "text-muted-foreground hover:bg-accent/20 hover:text-accent-foreground"
+          )}
         >
           <Settings className="h-5 w-5" />
           Settings
@@ -114,7 +119,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
               {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
             <h1 className="text-sm md:text-base font-medium text-foreground">
-              {navigation.find((item) => item.href === location)?.name || "MedAssist"}
+              {location === "/settings" ? "Settings" : navigation.find((item) => item.href === location)?.name || "MedAssist"}
             </h1>
           </div>
           <div className="flex items-center gap-3">
