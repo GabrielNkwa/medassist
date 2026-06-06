@@ -10,8 +10,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@workspace/api-zod": "*",
-    "@workspace/db": "*",
+    "@workspace/api-zod": "file:../../lib/api-zod",
+    "@workspace/db": "file:../../lib/db",
+    "@workspace/integrations-openai-ai-server": "file:../../lib/integrations-openai-ai-server",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.6",
     "dotenv": "^10.0.0",

@@ -9,6 +9,7 @@
     "./image": "./src/image/index.ts",
     "./audio": "./src/audio/index.ts"
   },
+  "types": "./src/index.ts",
   "dependencies": {
     "openai": "^6.27.0",
     "p-limit": "^7.3.0",
