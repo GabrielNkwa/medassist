@@ -6,9 +6,10 @@
     "dev": "concurrently \"npm --prefix artifacts/api-server run dev\" \"npm --prefix artifacts/medassist run dev\"",
     "dev:api": "npm --prefix artifacts/api-server run dev",
     "dev:frontend": "npm --prefix artifacts/medassist run dev",
-    "build": "npm run typecheck && npm run build:api && npm run build:frontend",
+    "build": "npm run typecheck && npm run build:api && npm run build:frontend && npm run copy-assets",
     "build:api": "npm --prefix artifacts/api-server run build",
     "build:frontend": "npm --prefix artifacts/medassist run build",
+    "copy-assets": "node -e \"const fs=require('fs');const path=require('path');const src=path.resolve(__dirname, 'artifacts/medassist/dist');const dest=path.resolve(__dirname, 'public');fs.rmSync(dest,{recursive:true,force:true});fs.cpSync(src,dest,{recursive:true});\"",
     "typecheck:libs": "tsc --build",
     "typecheck": "npm run typecheck:libs && (npm --prefix artifacts/api-server run typecheck || true) && (npm --prefix artifacts/medassist run typecheck || true)"
   },
