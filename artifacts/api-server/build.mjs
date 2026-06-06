@@ -24,10 +24,8 @@ async function buildAll() {
     logLevel: "info",
     // Some packages may not be bundleable, so we externalize them to keep the node bundle small.
     // This is especially useful for large runtime dependencies like openai, express, zod, iconv-lite, and mime-db.
-    // Local workspace packages can also be externalized so the bundle stays focused on app code.
     external: [
       "*.node",
-      "@workspace/*",
       "express",
       "openai",
       "drizzle-orm",

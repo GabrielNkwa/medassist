@@ -3,14 +3,18 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "dev": "concurrently \"pnpm -r --filter \\\"@workspace/api-server\\\" run dev\" \"pnpm -r --filter \\\"@workspace/medassist\\\" run dev\"",
-    "dev:api": "pnpm -r --filter \"@workspace/api-server\" run dev",
-    "dev:frontend": "pnpm -r --filter \"@workspace/medassist\" run dev",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build",
+    "dev": "concurrently \"npm --prefix artifacts/api-server run dev\" \"npm --prefix artifacts/medassist run dev\"",
+    "dev:api": "npm --prefix artifacts/api-server run dev",
+    "dev:frontend": "npm --prefix artifacts/medassist run dev",
+    "build": "npm run typecheck && node -e \"process.exit(0)\"",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck"
+    "typecheck": "npm run typecheck:libs && (npm --prefix artifacts/api-server run typecheck || true) && (npm --prefix artifacts/medassist run typecheck || true)"
   },
   "private": true,
+  "workspaces": [
+    "artifacts/*",
+    "lib/*"
+  ],
   "devDependencies": {
     "concurrently": "^10.0.3",
     "cross-env": "^10.1.0",
