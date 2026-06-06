@@ -6,3 +6,5 @@ packages:
   - 'integrations/**'
   - 'scripts'
   - 'api-spec'
+allowBuilds:
+  esbuild: true

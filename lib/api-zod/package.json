@@ -8,6 +8,6 @@
   },
   "types": "./src/index.ts",
   "dependencies": {
-    "zod": "*"
+    "zod": "latest"
   }
 }

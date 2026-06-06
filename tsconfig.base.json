@@ -21,6 +21,11 @@
     "skipLibCheck": true,
     "target": "es2022",
     "types": [],
-    "customConditions": ["workspace"]
+    "customConditions": ["workspace"],
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "forceConsistentCasingInFileNames": true
   }
 }

@@ -1,5 +1,10 @@
 {
   "installCommand": "pnpm install",
   "buildCommand": "pnpm run build",
-  "outputDirectory": "artifacts/api-server/dist"
+  "outputDirectory": "artifacts/medassist/dist",
+  "rewrites": [
+    { "source": "/api/:path*", "destination": "/api/[...path]" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
 }
+
