@@ -1,0 +1,2 @@
+# Vercel ignore file - explicitly DO NOT ignore public directory
+!public
