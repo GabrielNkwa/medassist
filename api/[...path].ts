@@ -6,8 +6,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ status: 'ok' });
   }
 
-  // Simple API response
-  res.status(200).json({
+  // Default API response
+  return res.status(200).json({
     message: 'Medical Aid Buddy API',
     success: true,
     timestamp: new Date().toISOString()
