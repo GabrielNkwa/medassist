@@ -6,10 +6,9 @@
     "dev": "concurrently \"npm --prefix artifacts/api-server run dev\" \"npm --prefix artifacts/medassist run dev\"",
     "dev:api": "npm --prefix artifacts/api-server run dev",
     "dev:frontend": "npm --prefix artifacts/medassist run dev",
-    "build": "npm run build:frontend && npm run copy-to-public",
+    "build": "npm run build:frontend",
     "build:api": "npm --prefix artifacts/api-server run build",
     "build:frontend": "npm --prefix artifacts/medassist run build",
-    "copy-to-public": "node copy-to-public.mjs",
     "typecheck:libs": "tsc --build",
     "typecheck": "npm run typecheck:libs && (npm --prefix artifacts/api-server run typecheck || echo 'API typecheck errors, continuing...') && (npm --prefix artifacts/medassist run typecheck || echo 'Frontend typecheck errors, continuing...')"
   },
