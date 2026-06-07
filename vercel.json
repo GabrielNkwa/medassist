@@ -7,11 +7,6 @@
   "public": true,
   "cleanUrls": true,
   "trailingSlash": false,
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "@vercel/node@3"
-    }
-  },
   "routes": [
     {
       "src": "/api/(.*)",
