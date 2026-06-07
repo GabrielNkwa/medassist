@@ -17,15 +17,16 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      "@": path.resolve(import.meta.dirname, "src"),
+      "@": path.resolve(import.meta.dirname ?? __dirname, "src"),
     },
     dedupe: ["react", "react-dom", "@tanstack/react-query"],
   },
-  root: path.resolve(import.meta.dirname),
+  root: path.resolve(import.meta.dirname ?? __dirname),
   build: {
-    outDir: path.resolve(import.meta.dirname, "../../public"),
+    outDir: path.resolve(import.meta.dirname ?? __dirname, "../../public"),
     emptyOutDir: true,
     cssMinify: "esbuild",
+    sourcemap: false,
   },
   css: {
     transformer: "postcss",
