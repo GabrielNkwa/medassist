@@ -4,8 +4,6 @@
 dist
 tmp
 out-tsc
-public/*
-!public/.gitkeep
 *.tsbuildinfo
 .expo
 .expo-shared
