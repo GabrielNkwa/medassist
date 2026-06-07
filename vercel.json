@@ -3,13 +3,24 @@
   "installCommand": "npm install",
   "buildCommand": "npm run build",
   "outputDirectory": "public",
-  "framework": null,
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "regions": ["sfo1"],
+  "public": true,
   "builds": [
-    { "src": "api/**/*.ts", "use": "@vercel/node" },
-    { "src": "public/**", "use": "@vercel/static" }
+    {
+      "src": "api/**/*.ts",
+      "use": "@vercel/node"
+    }
   ],
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/[...path]" },
-    { "source": "/(.*)", "destination": "/index.html" }
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/[...path]"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }

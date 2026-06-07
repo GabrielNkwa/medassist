@@ -1,6 +1,15 @@
+import { type VercelRequest, type VercelResponse } from "@vercel/node";
+import express from "express";
+import cors from "cors";
+import router from "../artifacts/api-server/src/routes";
 
-import app from "../artifacts/api-server/src/app";
+const app = express();
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use("/api", router);
 
-// Vercel can automatically bridge standard Express apps 
-// if you export it as the default handler
-export default app;
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // Vercel will handle the request
+  return app(req, res);
+}
